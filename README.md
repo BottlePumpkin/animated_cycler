@@ -17,6 +17,32 @@ A versatile Flutter widget that automatically cycles through a list of items wit
 - **Performance Optimized**: Efficient rendering with minimal widget rebuilds
 - **Easy Integration**: Simple API with sensible defaults
 
+## 📱 Demo
+
+<p align="center">
+  <img src="example/assets/screenshots/1.gif" width="300" alt="Vertical ranking ticker">
+  <br>
+  <em>Vertical ranking ticker with smooth animation transitions</em>
+</p>
+
+<p align="center">
+  <img src="example/assets/screenshots/2.gif" width="300" alt="Horizontal banner slider">
+  <br>
+  <em>Horizontal banner slider with product showcase</em>
+</p>
+
+<p align="center">
+  <img src="example/assets/screenshots/3.gif" width="300" alt="Interactive controls">
+  <br>
+  <em>Manual controls and interactive features</em>
+</p>
+
+<p align="center">
+  <img src="example/assets/screenshots/4.gif" width="300" alt="Custom animations">
+  <br>
+  <em>Custom animation curves and timing</em>
+</p>
+
 ## 🚀 Getting Started
 
 ### Installation
@@ -298,7 +324,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 ### Development Setup
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/yourusername/animated_cycler.git`
+2. Clone your fork: `git clone https://github.com/BottlePumpkin/animated_cycler.git`
 3. Create a feature branch: `git checkout -b feature/amazing-feature`
 4. Make your changes and add tests
 5. Run tests: `flutter test`
@@ -321,9 +347,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you have any questions or issues, please:
 
 1. Check the [example](example/) directory for usage examples
-2. Search [existing issues](https://github.com/yourusername/animated_cycler/issues)
-3. Create a [new issue](https://github.com/yourusername/animated_cycler/issues/new) if needed
+2. Search [existing issues](https://github.com/BottlePumpkin/animated_cycler/issues)
+3. Create a [new issue](https://github.com/BottlePumpkin/animated_cycler/issues/new) if needed
 
 ---
 
-⭐ If this package helped you, please give it a star on [GitHub](https://github.com/yourusername/animated_cycler) and a like on [pub.dev](https://pub.dev/packages/animated_cycler)!
+⭐ If this package helped you, please give it a star on [GitHub](https://github.com/BottlePumpkin/animated_cycler) and a like on [pub.dev](https://pub.dev/packages/animated_cycler)!

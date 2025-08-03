@@ -18,8 +18,10 @@ screenshots:
     path: example/assets/screenshots/1.gif
   - description: 'Horizontal banner slider with product showcase'
     path: example/assets/screenshots/2.gif
-  - description: 'Interactive examples with manual controls'
+  - description: 'Manual controls and interactive features'
     path: example/assets/screenshots/3.gif
+  - description: 'Custom animation curves and timing demonstrations'
+    path: example/assets/screenshots/4.gif
 
 environment:
   sdk: '>=2.17.0 <4.0.0'
