@@ -1,9 +1,9 @@
 name: animated_cycler
 description: A versatile Flutter widget that automatically cycles through items with smooth bidirectional animations. Perfect for tickers, banners, news feeds, and rotating content.
 version: 1.0.0
-homepage: https://github.com/yourusername/animated_cycler
-repository: https://github.com/yourusername/animated_cycler
-issue_tracker: https://github.com/yourusername/animated_cycler/issues
+homepage: https://github.com/BottlePumpkin/animated_cycler
+repository: https://github.com/BottlePumpkin/animated_cycler
+issue_tracker: https://github.com/BottlePumpkin/animated_cycler/issues
 documentation: https://pub.dev/documentation/animated_cycler/latest/
 
 topics:
