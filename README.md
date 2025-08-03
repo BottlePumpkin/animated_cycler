@@ -22,25 +22,16 @@ A versatile Flutter widget that automatically cycles through a list of items wit
 <p align="center">
   <img src="example/assets/screenshots/1.gif" width="300" alt="Vertical ranking ticker">
   <br>
-  <em>Vertical ranking ticker with smooth animation transitions</em>
 </p>
 
 <p align="center">
   <img src="example/assets/screenshots/2.gif" width="300" alt="Horizontal banner slider">
   <br>
-  <em>Horizontal banner slider with product showcase</em>
-</p>
-
-<p align="center">
-  <img src="example/assets/screenshots/3.gif" width="300" alt="Interactive controls">
-  <br>
-  <em>Manual controls and interactive features</em>
 </p>
 
 <p align="center">
   <img src="example/assets/screenshots/4.gif" width="300" alt="Custom animations">
   <br>
-  <em>Custom animation curves and timing</em>
 </p>
 
 ## 🚀 Getting Started
