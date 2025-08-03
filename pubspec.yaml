@@ -13,13 +13,13 @@ topics:
   - ticker
   - banner
 
-# screenshots:
-#   - description: 'Vertical ranking ticker showing animated cycling through rankings'
-#     path: screenshots/vertical_ticker.gif
-#   - description: 'Horizontal banner slider with product cards'
-#     path: screenshots/horizontal_banner.gif
-#   - description: 'Manual control interface with play/pause functionality'
-#     path: screenshots/manual_control.png
+screenshots:
+  - description: 'Vertical ranking ticker with smooth animation transitions'
+    path: example/assets/screenshots/1.gif
+  - description: 'Horizontal banner slider with product showcase'
+    path: example/assets/screenshots/2.gif
+  - description: 'Interactive examples with manual controls'
+    path: example/assets/screenshots/4.gif
 
 environment:
   sdk: '>=2.17.0 <4.0.0'
