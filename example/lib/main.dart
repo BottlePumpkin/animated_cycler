@@ -105,6 +105,9 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
             const SizedBox(height: 32),
             _buildSectionTitle('⚙️ Customization Options'),
             _buildCustomizationExamples(),
+            const SizedBox(height: 32),
+            _buildSectionTitle('🔄 Loop: False Example'),
+            _buildLoopFalseExample(),
           ],
         ),
       ),
@@ -489,6 +492,83 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                 ),
               ),
             ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoopFalseExample() {
+    final loopFalseData = ['First item', 'Second item', 'Last item (stops here)'];
+    
+    return Column(
+      children: [
+        Text(
+          'This example shows loop: false behavior. Auto-play stops at the last item.',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Colors.grey.shade600,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Container(
+          height: 60,
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.orange.shade50,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.orange.shade200),
+          ),
+          child: AnimatedCycler<String>.vertical(
+            items: loopFalseData,
+            height: 44,
+            loop: false, // This is the key difference!
+            displayDuration: const Duration(seconds: 2),
+            animationDuration: const Duration(milliseconds: 600),
+            itemBuilder: (context, item, index) => Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    index == loopFalseData.length - 1 
+                      ? Icons.stop_circle 
+                      : Icons.play_circle,
+                    color: index == loopFalseData.length - 1 
+                      ? Colors.red 
+                      : Colors.green,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      item,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Notice: Auto-play stops when reaching the last item',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            fontStyle: FontStyle.italic,
+            color: Colors.orange.shade700,
           ),
         ),
       ],

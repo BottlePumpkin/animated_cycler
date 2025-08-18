@@ -348,4 +348,135 @@ void main() {
       expect(completedIndex, isNotNull);
     });
   });
+
+  group('AnimatedCycler Loop Tests', () {
+    testWidgets('AnimatedCycler with loop: false stops at last item', 
+        (tester) async {
+      final key = GlobalKey<AnimatedCyclerState<String>>();
+      final items = <String>['Item 1', 'Item 2', 'Item 3'];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: AnimatedCycler<String>(
+              key: key,
+              items: items,
+              autoPlay: false,
+              loop: false,
+              itemBuilder: (context, item, index) => Text(item),
+            ),
+          ),
+        ),
+      );
+
+      // Start at first item
+      expect(key.currentState?.currentIndex, equals(0));
+
+      // Go to next item
+      key.currentState?.nextItem();
+      await tester.pump();
+      await tester.pumpAndSettle();
+      expect(key.currentState?.currentIndex, equals(1));
+
+      // Go to last item
+      key.currentState?.nextItem();
+      await tester.pump();
+      await tester.pumpAndSettle();
+      expect(key.currentState?.currentIndex, equals(2));
+
+      // Try to go beyond last item - should stay at last item
+      key.currentState?.nextItem();
+      await tester.pump();
+      await tester.pumpAndSettle();
+      expect(key.currentState?.currentIndex, equals(2)); // Should stay at 2
+    });
+
+    testWidgets(
+        'AnimatedCycler with loop: false stops at first item going backwards',
+        (tester) async {
+      final key = GlobalKey<AnimatedCyclerState<String>>();
+      final items = <String>['Item 1', 'Item 2', 'Item 3'];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: AnimatedCycler<String>(
+              key: key,
+              items: items,
+              autoPlay: false,
+              loop: false,
+              itemBuilder: (context, item, index) => Text(item),
+            ),
+          ),
+        ),
+      );
+
+      // Start at first item
+      expect(key.currentState?.currentIndex, equals(0));
+
+      // Try to go to previous item - should stay at first item
+      key.currentState?.previousItem();
+      await tester.pump();
+      await tester.pumpAndSettle();
+      expect(key.currentState?.currentIndex, equals(0)); // Should stay at 0
+    });
+
+    testWidgets('AnimatedCycler with loop: true wraps around', (tester) async {
+      final key = GlobalKey<AnimatedCyclerState<String>>();
+      final items = <String>['Item 1', 'Item 2', 'Item 3'];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: AnimatedCycler<String>(
+              key: key,
+              items: items,
+              autoPlay: false,
+              // loop: true is the default
+              itemBuilder: (context, item, index) => Text(item),
+            ),
+          ),
+        ),
+      );
+
+      // Start at first item
+      expect(key.currentState?.currentIndex, equals(0));
+
+      // Go to previous item - should wrap to last item
+      key.currentState?.previousItem();
+      await tester.pump();
+      await tester.pumpAndSettle();
+      // Should wrap to last item
+      expect(key.currentState?.currentIndex, equals(2));
+
+      // Go to next item - should go to first item
+      key.currentState?.nextItem();
+      await tester.pump();
+      await tester.pumpAndSettle();
+      expect(key.currentState?.currentIndex, equals(0));
+
+      // Go to next item - should go to second item
+      key.currentState?.nextItem();
+      await tester.pump();
+      await tester.pumpAndSettle();
+      expect(key.currentState?.currentIndex, equals(1));
+
+      // Go to next item - should go to third item
+      key.currentState?.nextItem();
+      await tester.pump();
+      await tester.pumpAndSettle();
+      expect(key.currentState?.currentIndex, equals(2));
+
+      // Go to next item - should wrap to first item
+      key.currentState?.nextItem();
+      await tester.pump();
+      await tester.pumpAndSettle();
+      // Should wrap to first item
+      expect(key.currentState?.currentIndex, equals(0));
+    });
+
+    // Note: AutoPlay with loop: false testing requires special Timer 
+    // handling. The manual control tests above already verify the 
+    // loop: false logic works correctly
+  });
 }

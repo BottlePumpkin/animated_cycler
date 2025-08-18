@@ -345,6 +345,11 @@ class AnimatedCyclerState<T> extends State<AnimatedCycler<T>>
     }
 
     _timer = Timer.periodic(widget.displayDuration, (timer) {
+      // If loop is false and we're at the last item, stop auto-play
+      if (!widget.loop && _currentIndex >= widget.items.length - 1) {
+        _stopAutoPlay();
+        return;
+      }
       _goToNextItem();
     });
   }
@@ -361,10 +366,20 @@ class AnimatedCyclerState<T> extends State<AnimatedCycler<T>>
       return;
     }
 
+    // Check if we can go to next item when loop is false
+    if (!widget.loop && _currentIndex >= widget.items.length - 1) {
+      return;
+    }
+
     _animationController.forward().then((_) {
       if (mounted) {
         setState(() {
-          _currentIndex = (_currentIndex + 1) % widget.items.length;
+          if (widget.loop) {
+            _currentIndex = (_currentIndex + 1) % widget.items.length;
+          } else {
+            _currentIndex = 
+                (_currentIndex + 1).clamp(0, widget.items.length - 1);
+          }
         });
         _animationController.reset();
 
@@ -390,7 +405,9 @@ class AnimatedCyclerState<T> extends State<AnimatedCycler<T>>
     if (widget.items.isEmpty) {
       return null;
     }
-    final nextIndex = (_currentIndex + 1) % widget.items.length;
+    final nextIndex = widget.loop 
+        ? (_currentIndex + 1) % widget.items.length
+        : (_currentIndex + 1).clamp(0, widget.items.length - 1);
     return widget.items[nextIndex];
   }
 
@@ -399,7 +416,9 @@ class AnimatedCyclerState<T> extends State<AnimatedCycler<T>>
     if (widget.items.isEmpty) {
       return 0;
     }
-    return (_currentIndex + 1) % widget.items.length;
+    return widget.loop 
+        ? (_currentIndex + 1) % widget.items.length
+        : (_currentIndex + 1).clamp(0, widget.items.length - 1);
   }
 
   /// Calculates the animation offset based on direction and progress.
@@ -486,19 +505,36 @@ class AnimatedCyclerState<T> extends State<AnimatedCycler<T>>
   /// Manually goes back to the previous item.
   ///
   /// Animates to the previous item in the list.
-  /// Wraps around to the last item if currently at the first item.
+  /// If `loop` is true, wraps around to the last item when at the first item.
+  /// If `loop` is false, stops at the first item.
   void previousItem() {
     if (widget.items.isEmpty) {
+      return;
+    }
+
+    // Check if we can go to previous item when loop is false
+    if (!widget.loop && _currentIndex <= 0) {
       return;
     }
 
     _animationController.forward().then((_) {
       if (mounted) {
         setState(() {
-          _currentIndex =
-              (_currentIndex - 1 + widget.items.length) % widget.items.length;
+          if (widget.loop) {
+            _currentIndex =
+                (_currentIndex - 1 + widget.items.length) % widget.items.length;
+          } else {
+            _currentIndex = 
+                (_currentIndex - 1).clamp(0, widget.items.length - 1);
+          }
         });
         _animationController.reset();
+
+        // Trigger animation complete callback
+        widget.onAnimationComplete?.call(
+          widget.items[_currentIndex],
+          _currentIndex,
+        );
       }
     });
   }
@@ -518,6 +554,12 @@ class AnimatedCyclerState<T> extends State<AnimatedCycler<T>>
           _currentIndex = index;
         });
         _animationController.reset();
+
+        // Trigger animation complete callback
+        widget.onAnimationComplete?.call(
+          widget.items[_currentIndex],
+          _currentIndex,
+        );
       }
     });
   }
