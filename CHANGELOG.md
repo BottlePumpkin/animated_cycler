@@ -5,6 +5,28 @@ All notable changes to the AnimatedCycler package will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2025-08-18
+
+### Fixed
+- Fixed `loop: false` parameter not working properly - the widget now correctly stops at the last item when loop is disabled
+- Fixed autoPlay to stop automatically when reaching the last item with `loop: false`
+- Added proper boundary checks for next/previous item navigation
+- Added animation completion callbacks to all navigation methods (nextItem, previousItem, goToIndex)
+
+### Improved
+- Enhanced code quality by fixing all lint warnings
+- Improved code formatting to meet Dart style guidelines (80-character line limit)
+- Added comprehensive test coverage for loop functionality
+- Added example demonstrating `loop: false` behavior
+
+### Documentation
+- Updated CHANGELOG.md with version history
+
+## [1.0.2] - 2025-08-18
+
+### Internal
+- Version skipped due to publishing process
+
 ## [1.0.0] - 2025-08-03
 
 ### Added
