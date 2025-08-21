@@ -76,6 +76,7 @@ class AnimatedCycler<T> extends StatefulWidget {
     this.loop = true,
     this.onItemTap,
     this.onAnimationComplete,
+    this.onAnimationStart,
   });
 
   /// Creates a vertical [AnimatedCycler] optimized for vertical content.
@@ -108,6 +109,7 @@ class AnimatedCycler<T> extends StatefulWidget {
     this.loop = true,
     this.onItemTap,
     this.onAnimationComplete,
+    this.onAnimationStart,
   })  : direction = Axis.vertical,
         size = height ?? 50.0;
 
@@ -142,6 +144,7 @@ class AnimatedCycler<T> extends StatefulWidget {
     this.loop = true,
     this.onItemTap,
     this.onAnimationComplete,
+    this.onAnimationStart,
   })  : direction = Axis.horizontal,
         size = width ?? 200.0;
 
@@ -219,6 +222,13 @@ class AnimatedCycler<T> extends StatefulWidget {
   /// Optional callback - can be null if completion handling is not needed.
   final void Function(T item, int index)? onAnimationComplete;
 
+  /// Callback function called when an animation transition starts.
+  ///
+  /// Receives the item that will be displayed next and its index as parameters.
+  /// Called at the beginning of each transition animation.
+  /// Optional callback - can be null if start handling is not needed.
+  final void Function(T item, int index)? onAnimationStart;
+
   @override
   State<AnimatedCycler<T>> createState() => AnimatedCyclerState<T>();
 
@@ -257,6 +267,12 @@ class AnimatedCycler<T> extends StatefulWidget {
         ObjectFlagProperty<void Function(T item, int index)?>.has(
           'onAnimationComplete',
           onAnimationComplete,
+        ),
+      )
+      ..add(
+        ObjectFlagProperty<void Function(T item, int index)?>.has(
+          'onAnimationStart',
+          onAnimationStart,
         ),
       );
   }
@@ -371,15 +387,21 @@ class AnimatedCyclerState<T> extends State<AnimatedCycler<T>>
       return;
     }
 
+    // Calculate next index before animation starts
+    final nextIndex = widget.loop 
+        ? (_currentIndex + 1) % widget.items.length
+        : (_currentIndex + 1).clamp(0, widget.items.length - 1);
+
+    // Trigger animation start callback
+    widget.onAnimationStart?.call(
+      widget.items[nextIndex],
+      nextIndex,
+    );
+
     _animationController.forward().then((_) {
       if (mounted) {
         setState(() {
-          if (widget.loop) {
-            _currentIndex = (_currentIndex + 1) % widget.items.length;
-          } else {
-            _currentIndex = 
-                (_currentIndex + 1).clamp(0, widget.items.length - 1);
-          }
+          _currentIndex = nextIndex;
         });
         _animationController.reset();
 
@@ -517,16 +539,21 @@ class AnimatedCyclerState<T> extends State<AnimatedCycler<T>>
       return;
     }
 
+    // Calculate previous index before animation starts
+    final previousIndex = widget.loop
+        ? (_currentIndex - 1 + widget.items.length) % widget.items.length
+        : (_currentIndex - 1).clamp(0, widget.items.length - 1);
+
+    // Trigger animation start callback
+    widget.onAnimationStart?.call(
+      widget.items[previousIndex],
+      previousIndex,
+    );
+
     _animationController.forward().then((_) {
       if (mounted) {
         setState(() {
-          if (widget.loop) {
-            _currentIndex =
-                (_currentIndex - 1 + widget.items.length) % widget.items.length;
-          } else {
-            _currentIndex = 
-                (_currentIndex - 1).clamp(0, widget.items.length - 1);
-          }
+          _currentIndex = previousIndex;
         });
         _animationController.reset();
 
@@ -547,6 +574,12 @@ class AnimatedCyclerState<T> extends State<AnimatedCycler<T>>
     if (widget.items.isEmpty || index < 0 || index >= widget.items.length) {
       return;
     }
+
+    // Trigger animation start callback
+    widget.onAnimationStart?.call(
+      widget.items[index],
+      index,
+    );
 
     _animationController.forward().then((_) {
       if (mounted) {

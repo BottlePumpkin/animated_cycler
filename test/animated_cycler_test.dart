@@ -347,6 +347,89 @@ void main() {
       expect(completedItem, isNotNull);
       expect(completedIndex, isNotNull);
     });
+
+    testWidgets('AnimatedCycler onAnimationStart callback works',
+        (tester) async {
+      final key = GlobalKey<AnimatedCyclerState<String>>();
+      final items = <String>['Item 1', 'Item 2', 'Item 3'];
+      String? startedItem;
+      int? startedIndex;
+      String? completedItem;
+      int? completedIndex;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: AnimatedCycler<String>(
+              key: key,
+              items: items,
+              autoPlay: false,
+              animationDuration: const Duration(milliseconds: 50),
+              onAnimationStart: (item, index) {
+                startedItem = item;
+                startedIndex = index;
+              },
+              onAnimationComplete: (item, index) {
+                completedItem = item;
+                completedIndex = index;
+              },
+              itemBuilder: (context, item, index) => Text(item),
+            ),
+          ),
+        ),
+      );
+
+      // Test nextItem
+      key.currentState?.nextItem();
+      await tester.pump();
+      
+      // Animation start should be triggered immediately
+      expect(startedItem, equals('Item 2'));
+      expect(startedIndex, equals(1));
+      
+      // Wait for animation to complete
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(completedItem, equals('Item 2'));
+      expect(completedIndex, equals(1));
+
+      // Reset tracking variables
+      startedItem = null;
+      startedIndex = null;
+      completedItem = null;
+      completedIndex = null;
+
+      // Test previousItem
+      key.currentState?.previousItem();
+      await tester.pump();
+      
+      // Animation start should be triggered immediately
+      expect(startedItem, equals('Item 1'));
+      expect(startedIndex, equals(0));
+      
+      // Wait for animation to complete
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(completedItem, equals('Item 1'));
+      expect(completedIndex, equals(0));
+
+      // Reset tracking variables
+      startedItem = null;
+      startedIndex = null;
+      completedItem = null;
+      completedIndex = null;
+
+      // Test goToIndex
+      key.currentState?.goToIndex(2);
+      await tester.pump();
+      
+      // Animation start should be triggered immediately
+      expect(startedItem, equals('Item 3'));
+      expect(startedIndex, equals(2));
+      
+      // Wait for animation to complete
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(completedItem, equals('Item 3'));
+      expect(completedIndex, equals(2));
+    });
   });
 
   group('AnimatedCycler Loop Tests', () {
